@@ -257,103 +257,104 @@ while True:
     is_finish = False
     round_history.append(trick_play)
     trick_play = []
-    is_start = False
+    is_start = 0
     while True:
-        '''
-        if count == 0:
-            is_start = True
-        else:
-            is_start = False
-        '''
+        for i in range(0, 4):
+            if "3D" in decks[i]:
+                is_start = i
+
         print("Your deck: " + str(decks[0]))
 
         player_play = input("Your turn. Deal a card or pass: ")
 
-        if player_play in decks[0]:
-            if len(play_to_beat) == 0:
-                if player_play[:2] == "10":
-                    play_to_beat = ["0" + player_play[2]]
-                else:
-                    play_to_beat = [player_play]
-                decks[0].remove(player_play)
-                passed = [0,0,0,0]
-                print("Player 1 (you) played " + player_play)
-                for a in range(0, 4):
-                    if len(decks[a]) == 0:
-                        is_finish = True
-                        print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
-                            a + 1) + " has won the game!")
-                        break
-                if is_finish:
-                    break
-                trick_play.append((0, [player_play]))
-            elif compare_card(player_play, play_to_beat[0]):
-                if player_play[:2] == "10":
-                    play_to_beat = ["0" + player_play[2]]
-                else:
-                    play_to_beat = [player_play]
-                decks[0].remove(player_play)
-                passed = [0,0,0,0]
-                print("Player 1 (you) played " + player_play)
-                for a in range(0, 4):
-                    if len(decks[a]) == 0:
-                        is_finish = True
-                        print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
-                            a + 1) + " has won the game!")
-                        break
-                trick_play.append((0, [player_play]))
-            else:
-                print("Your played card is smaller than the current card. Please enter a card that is bigger than the current card or pass.")
-                continue
-        elif player_play == "pass":
-            print("Player 1 (you) passed")
-            trick_play.append((0, []))
-            passed[0] = 1
-            passcount = passed.count(1)
-            if passcount == 3:
-                player_num = passed.index(0) + 1
-                passed = [0, 0, 0, 0]
-                play_to_beat = []
-                print("All players have passed. Player " + str(player_num) + " is starting a new trick.")
-                if player_num == 1:
-                    play_to_beat = []
-                    continue
-                else:
-                    for i in range(player_num, 5):
-                        bot_play = play(hand=decks[i - 1], is_start_of_round=is_start, play_to_beat=play_to_beat,
-                                        round_history=round_history, player_no=(i - 1),
-                                        hand_sizes=(len(decks[0]), len(decks[1]), len(decks[2]), len(decks[3])),
-                                        scores=0,
-                                        round_no=round)
-                        if len(bot_play) == 0:
-                            print("Player " + str(i) + " has played a pass." + "They have " + str(
-                                len(decks[i - 1])) + " cards left.")
-                            passed[i - 1] = 1
-                            trick_play.append((i-1, []))
-                        else:
-                            if bot_play[0][:2] == "10":
-                                play_to_beat = ["0" + bot_play[0][2]]
-                            else:
-                                play_to_beat = [bot_play[0]]
-                            decks[i - 1].remove(bot_play[0])
-                            passed = [0,0,0,0]
-                            print("Player " + str(i) + " has played " + bot_play[0] + ". They have " + str(
-                                len(decks[i - 1])) + " cards left.")
-                            for a in range(0, 4):
-                                if len(decks[a]) == 0:
-                                    is_finish = True
-                                    print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
-                                        a + 1) + " has won the game!")
-                                    break
-                            if is_finish:
-                                break
-                            trick_play.append((i-1, bot_play))
+        if is_start == 0 and count == 0:
+            print("Player 1 has 3D. Player one is starting.")
+        else:
+            if player_play in decks[0]:
+                if len(play_to_beat) == 0:
+                    if player_play[:2] == "10":
+                        play_to_beat = ["0" + player_play[2]]
+                    else:
+                        play_to_beat = [player_play]
+                    decks[0].remove(player_play)
+                    passed = [0,0,0,0]
+                    print("Player 1 (you) played " + player_play)
+                    for a in range(0, 4):
+                        if len(decks[a]) == 0:
+                            is_finish = True
+                            print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
+                                a + 1) + " has won the game!")
+                            break
                     if is_finish:
                         break
+                    trick_play.append((0, [player_play]))
+                elif compare_card(player_play, play_to_beat[0]):
+                    if player_play[:2] == "10":
+                        play_to_beat = ["0" + player_play[2]]
+                    else:
+                        play_to_beat = [player_play]
+                    decks[0].remove(player_play)
+                    passed = [0,0,0,0]
+                    print("Player 1 (you) played " + player_play)
+                    for a in range(0, 4):
+                        if len(decks[a]) == 0:
+                            is_finish = True
+                            print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
+                                a + 1) + " has won the game!")
+                            break
+                    trick_play.append((0, [player_play]))
+                else:
+                    print("Your played card is smaller than the current card. Please enter a card that is bigger than the current card or pass.")
                     continue
-        else:
-            print("Your entry is not valid. Please make sure your entry matches one of the cards in your deck. If you want to play a pass enter 'pass'")
-            continue
+            elif player_play == "pass":
+                print("Player 1 (you) passed")
+                trick_play.append((0, []))
+                passed[0] = 1
+                passcount = passed.count(1)
+                if passcount == 3:
+                    player_num = passed.index(0) + 1
+                    passed = [0, 0, 0, 0]
+                    play_to_beat = []
+                    print("All players have passed. Player " + str(player_num) + " is starting a new trick.")
+                    if player_num == 1:
+                        play_to_beat = []
+                        continue
+                    else:
+                        for i in range(player_num, 5):
+                            bot_play = play(hand=decks[i - 1], is_start_of_round=is_start, play_to_beat=play_to_beat,
+                                            round_history=round_history, player_no=(i - 1),
+                                            hand_sizes=(len(decks[0]), len(decks[1]), len(decks[2]), len(decks[3])),
+                                            scores=0,
+                                            round_no=round)
+                            if len(bot_play) == 0:
+                                print("Player " + str(i) + " has played a pass." + "They have " + str(
+                                    len(decks[i - 1])) + " cards left.")
+                                passed[i - 1] = 1
+                                trick_play.append((i-1, []))
+                            else:
+                                if bot_play[0][:2] == "10":
+                                    play_to_beat = ["0" + bot_play[0][2]]
+                                else:
+                                    play_to_beat = [bot_play[0]]
+                                decks[i - 1].remove(bot_play[0])
+                                passed = [0,0,0,0]
+                                print("Player " + str(i) + " has played " + bot_play[0] + ". They have " + str(
+                                    len(decks[i - 1])) + " cards left.")
+                                for a in range(0, 4):
+                                    if len(decks[a]) == 0:
+                                        is_finish = True
+                                        print("Player " + str(a + 1) + " has no cards left in their deck. Player " + str(
+                                            a + 1) + " has won the game!")
+                                        break
+                                if is_finish:
+                                    break
+                                trick_play.append((i-1, bot_play))
+                        if is_finish:
+                            break
+                        continue
+            else:
+                print("Your entry is not valid. Please make sure your entry matches one of the cards in your deck. If you want to play a pass enter 'pass'")
+                continue
 
         if is_finish:
             break
